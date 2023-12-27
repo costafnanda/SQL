@@ -1,0 +1,15 @@
+--rodar o vacuun analyse antes de executar a consulta de relatorio
+select distinct
+relnamespace::regnamespace schema,
+relname as tabela,
+reltuples qtd_linhas
+--format_type(atttypid,atttypmod) as tipo
+from pg_class c
+inner join pg_attribute a
+on (c.oid=a.attrelid)
+where attnum>0
+and relnamespace in ('mapeamento_urbano'::regnamespace) 
+--  and relname in ('clientes','tributacao')
+and relkind='r' and reltuples>=1 and relname   not like '%\_mu\_%'
+--and format_type(atttypid,atttypmod) like 'geometry%'
+order by 1,2;
